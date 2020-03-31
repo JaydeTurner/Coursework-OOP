@@ -6,4 +6,7 @@ public class WorkSchedule {
 	private Date startDate;
 	private Date endDate;
 
+	public void SetSchedule() {
+		
+	}
 }
