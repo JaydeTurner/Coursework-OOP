@@ -2,13 +2,16 @@ import java.io.FileReader;
 
 public class Vehicle {
 
+	protected int type;
 	protected String location;
 	protected String make;
 	protected String model;
 	protected String regNo;
 	protected int weight;
 	
-	public Vehicle(String location, String make, String model, String regNo, int weight) {
+	public Vehicle(int type, String location, String make, String model, String regNo, int weight) {
+
+		this.type = type;
 		this.location = location;
 		this.make = make;
 		this.model = model;
@@ -16,6 +19,11 @@ public class Vehicle {
 		this.weight = weight;
 	}
 
+	public String getMake() {
+		return make;
+		
+	}
+	
 	public boolean IsAvailable() {
 		boolean availability = false;
 		/*

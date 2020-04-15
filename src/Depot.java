@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Depot {
-	
-	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
 
 	
 	protected String depotName;
+	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
+	
+	public Depot(String depotName) {
+		
+	}
+
+	
 
 
 	public void GetVehicle() {
@@ -27,6 +32,13 @@ public class Depot {
 		
 	}
 	
+	public void listVehicles() {
+		
+		for (Vehicle v : VEHICLES) {
+			System.out.println("Make :" +v.getMake());
+		}
+	}
+	
 	public void IsAvailable() {
 		
 	}
@@ -43,22 +55,25 @@ public class Depot {
 
 		try {
 
-			CSVFile = new Scanner(new FileReader("data/vehicles.csv"));
+			CSVFile = new Scanner(new FileReader("C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv"));
 
 			while (CSVFile.hasNext()) {
+				String[] array = CSVFile.nextLine().split(" ");
+				if (array[0].startsWith("0")) {
 
-				if (CSVFile.hasNext("0")) {
-					
-					String[] array = CSVFile.nextLine().split(" ");
-					
-					VEHICLES.add(new Truck(Integer.valueOf(array[0]), array[1], Double.valueOf(array[2]),
-							Boolean.valueOf(array[3]), Boolean.valueOf(array[4]),
-							(array.length == 5) ? "" : array[5]));
+					VEHICLES.add(new Truck(Integer.valueOf(array[0]), String.valueOf(array[1]),
+							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[4]),
+							Integer.valueOf(array[6]), Integer.valueOf(array[7])) );
 
-					Truck mytruck = new Truck();
-				} else {
-					Tanker mytanker = new Tanker();
+
+				} else if (array[0].startsWith("1") || array[0].startsWith("2")) {
+					
+					VEHICLES.add(new Tanker(Integer.valueOf(array[0]), String.valueOf(array[1]), String.valueOf(array[2]),
+							String.valueOf(array[3]), String.valueOf(array[5]), Integer.valueOf(array[4]),
+							Integer.valueOf(array[0]), String.valueOf(array[6])) );
+
 				}
+				
 			}
 
 		} catch (FileNotFoundException e) {
@@ -67,6 +82,7 @@ public class Depot {
 		} finally {
 			if (CSVFile != null) {
 				CSVFile.close();
+				System.out.println("Closing Stream...");
 			}
 		}
 

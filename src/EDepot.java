@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class EDepot {
     private static final Scanner S = new Scanner(System.in);
 
+   public static Depot testy = new Depot("home");
 
 	public static void main(String[] args) {
 		
@@ -17,8 +18,11 @@ public class EDepot {
         do {
             System.out.format("\tExcellent E-Depot Systems\n");
             System.out.format("\t\tMain Menu:\t\t\n");
-            System.out.format("\nPlease select the Depot you wish to access:\n");
+            System.out.format("\nLoading Vehicles...\n");
             
+            testy.LoadVehiclesFromFile();
+            System.out.format("\nTrying to List Vehicles...\n");
+            testy.listVehicles();
             //For each depot, print each depot information per line
             //GetDepot();
     		//List of available depots
