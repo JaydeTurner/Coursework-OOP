@@ -7,15 +7,25 @@ public class Depot {
 
 	
 	protected String depotName;
+	protected String postCode;
+	
 	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
 	
-	public Depot(String depotName) {
+	public Depot(String depotName, String postCode) {
+		this.depotName = depotName;
+		this.postCode = postCode;
 		
 	}
 
 	
+	public String GetDepotName() {
+		return depotName;
+	}
 
-
+	public String GetPostCode() {
+		return postCode;
+	}
+	
 	public void GetVehicle() {
 		
 	}
@@ -35,13 +45,21 @@ public class Depot {
 	public void listVehicles() {
 		
 		for (Vehicle v : VEHICLES) {
-			System.out.println("Make :" +v.getMake());
+			if(v.GetLocation() == depotName) {
+			v.PrintVehicleInfo();
+			}
 		}
 	}
 	
 	public void IsAvailable() {
 		
 	}
+	
+	public void PrintDepotInfo() {
+		String depotInfo = GetDepotName() + " " + GetPostCode();
+		
+		System.out.format(depotInfo + "\n");
+}
 	
 	public void LoadVehiclesFromFile() {
 
@@ -82,9 +100,9 @@ public class Depot {
 		} finally {
 			if (CSVFile != null) {
 				CSVFile.close();
-				System.out.println("Closing Stream...");
 			}
 		}
 
 	}
 }
+	

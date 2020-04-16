@@ -1,5 +1,3 @@
-import java.io.FileReader;
-
 public class Vehicle {
 
 	protected int type;
@@ -19,9 +17,33 @@ public class Vehicle {
 		this.weight = weight;
 	}
 
-	public String getMake() {
+	public int GetType() {
+		return type;
+		
+	}
+	
+	public String GetLocation() {
+		return location;
+		
+	}
+	
+	public String GetMake() {
 		return make;
 		
+	}
+	
+	public String GetModel() {
+		return model;
+		
+	}
+	
+	public String GetRegNo() {
+		return regNo;
+		
+	}
+	
+	public int GetWeight() {
+		return weight;
 	}
 	
 	public boolean IsAvailable() {
@@ -34,6 +56,17 @@ public class Vehicle {
 	}
 
 	public void SetSchedule() {
+
+	}
+	
+	public void PrintVehicleInfo() {
+		
+		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " +
+		 GetRegNo() + " " + + GetWeight() + " "  + IsAvailable();
+		
+		System.out.format(vehicleInfo);
+		
+		
 
 	}
 

@@ -1,69 +1,110 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EDepot {
-    private static final Scanner S = new Scanner(System.in);
+	private static final Scanner S = new Scanner(System.in);
 
-   public static Depot testy = new Depot("home");
+	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
+
 
 	public static void main(String[] args) {
-		
-		
-		//Check our existing depot's and load them in from file. Here we can alert the user if there is a problem with the files.
-		
+
+		// Check our existing depot's and load them in from file. Here we can alert the
+		// user if there is a problem with the files.
+
+		LoadDepotsFromFile();
+		System.out.format("Depots Loaded\n");
 		
 		
 		String menuInput = " "; // Initialising menu input to a blank space.
 								// This is because our check for this loop will
-								// trigger and end the loop if it contains NULL
-        do {
-            System.out.format("\tExcellent E-Depot Systems\n");
-            System.out.format("\t\tMain Menu:\t\t\n");
-            System.out.format("\nLoading Vehicles...\n");
-            
-            testy.LoadVehiclesFromFile();
-            System.out.format("\nTrying to List Vehicles...\n");
-            testy.listVehicles();
-            //For each depot, print each depot information per line
-            //GetDepot();
-    		//List of available depots
-            
-          //User menu input
-            menuInput = S.next().toUpperCase();
+								// trigger and endh the loop if it contains NULL
+		do {
+			System.out.format("\tExcellence E-Depot Systems\n");
+			System.out.format("\t\tMain Menu:\t\t\n");
+			System.out.format("1) Log On\n");
+			System.out.format("Q) Quit Application\n");
 
-            
-        } while (!menuInput.equals(null));
+			menuInput = S.next().toUpperCase();
+
+			switch (menuInput) {
+			case "1":
+				System.out.format("You have selected Log On\n");
+				LogOn();
+
+			}
+
+		} while (!menuInput.equals("Q"));
 		
-		
-		
-		//GetDepot();
-		//List of available depots
-		
-		
-		//User menu input
-		
-		
-		//LogOn();
-		//Log on call
 	}
-	
+
 	public Depot GetDepot() {
-		
+
 		return null;
+	}
+
+	public static void ListDepots() {
+		System.out.format("List Of Depots:\n");
+		for (Depot d : DEPOTS) {
+			d.PrintDepotInfo();
+			d.listVehicles();
 		}
-	
-	
-	public void LogOn() {
-		
-		System.out.format("\nUsername:\n");
-		
-		//Handle Username input, display input
-		
-		System.out.format("\nPassword:\n");
-		
-		//Handle Password, Hide input
+
 	}
-	
+
+	public static void LogOn() {
+		
+		String usrName = " ";
+		String pwd = " ";
+
+		System.out.format("\nUsername: ");
+		
+		usrName = S.next().toUpperCase();
+		
+		System.out.format("\nYou are trying to log in as " + usrName);
+
+		// Handle Username input, display input
+
+		System.out.format("\nPassword: ");
+		
+		pwd = S.next().toUpperCase();
+		
+		System.out.format("Logging in...");
+
+		// Handle Password, Hide input
+	}
+
 	public void SetupWorkSchedule() {
-		
+
 	}
+	
+	public static void LoadDepotsFromFile() {
+		
+
+		Scanner CSVFile = null;
+
+		try {
+
+			CSVFile = new Scanner(new FileReader("C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\depots.csv"));
+
+			while (CSVFile.hasNext()) {
+				String[] array = CSVFile.nextLine().split(" ");
+				
+				DEPOTS.add(new Depot(String.valueOf(array[0]), String.valueOf(array[1])));
+				
+			}
+
+		} catch (FileNotFoundException e) {
+			System.err.format(e.getMessage());
+			System.out.format("Please Contact the System Administrator. Error: Depots file not found\n");
+		} finally {
+			if (CSVFile != null) {
+				CSVFile.close();
+			}
+		}
+
+	}
+	
 }
