@@ -8,23 +8,22 @@ public class EDepot {
 
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
 
-
 	public static void main(String[] args) {
 
-		// Check our existing depot's and load them in from file. Here we can alert the
-		// user if there is a problem with the files.
-
 		LoadDepotsFromFile();
-		System.out.format("Depots Loaded\n");
-		
-		
+
+		MainMenu();
+
+	}
+
+	public static void MainMenu() {
+
 		String menuInput = " "; // Initialising menu input to a blank space.
-								// This is because our check for this loop will
-								// trigger and endh the loop if it contains NULL
-		do {
+				do {
 			System.out.format("\tExcellence E-Depot Systems\n");
 			System.out.format("\t\tMain Menu:\t\t\n");
 			System.out.format("1) Log On\n");
+			System.out.format("2) List Depots\n");
 			System.out.format("Q) Quit Application\n");
 
 			menuInput = S.next().toUpperCase();
@@ -33,11 +32,15 @@ public class EDepot {
 			case "1":
 				System.out.format("You have selected Log On\n");
 				LogOn();
-
+				break;
+			case "2":
+				System.out.format("You have selected list Depots\n");
+				ListDepots();
+				break;
 			}
 
 		} while (!menuInput.equals("Q"));
-		
+
 	}
 
 	public Depot GetDepot() {
@@ -51,37 +54,38 @@ public class EDepot {
 			d.PrintDepotInfo();
 			d.listVehicles();
 		}
+		System.out.format("\n\n");
 
 	}
 
 	public static void LogOn() {
-		
+
 		String usrName = " ";
 		String pwd = " ";
 
 		System.out.format("\nUsername: ");
-		
 		usrName = S.next().toUpperCase();
-		
+
 		System.out.format("\nYou are trying to log in as " + usrName);
 
-		// Handle Username input, display input
+		Driver curUser = new Driver(usrName);
 
 		System.out.format("\nPassword: ");
-		
-		pwd = S.next().toUpperCase();
-		
+		pwd = S.next();
+
 		System.out.format("Logging in...");
 
-		// Handle Password, Hide input
+		if (curUser.CheckPassword(pwd)) {
+			System.out.format("Welcome, " + usrName + "\n\n");
+		}
+
 	}
 
 	public void SetupWorkSchedule() {
 
 	}
-	
+
 	public static void LoadDepotsFromFile() {
-		
 
 		Scanner CSVFile = null;
 
@@ -93,7 +97,6 @@ public class EDepot {
 				String[] array = CSVFile.nextLine().split(" ");
 				
 				DEPOTS.add(new Depot(String.valueOf(array[0]), String.valueOf(array[1])));
-				
 			}
 
 		} catch (FileNotFoundException e) {
@@ -106,5 +109,5 @@ public class EDepot {
 		}
 
 	}
-	
+
 }
