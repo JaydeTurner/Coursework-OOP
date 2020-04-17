@@ -1,18 +1,23 @@
 package platform;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import depots.Depot;
+import core.Depot;
+import core.Driver;
 
 public class EDepot {
 	private static final Scanner S = new Scanner(System.in);
 
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
+	
+	public static Driver curUser = new Driver("Guest", "", "", 0);
+	public static Depot curDepot = new Depot("", "");
 
 	public static void main(String[] args) {
-
+		
 		LoadDepotsFromFile();
 		MainMenu();
 
@@ -20,34 +25,55 @@ public class EDepot {
 
 	public static void MainMenu() {
 
+
 		String menuInput = " "; // Initialising menu input to a blank space.
+		// ---------------Root Menu display
 		do {
 			System.out.format("\tExcellence E-Depot Systems\n");
 			System.out.format("\t\tMain Menu:\t\t\n");
-			while (!curUser.GetAuthStatus()) {
+			System.out.format("\n\nWelcome, " + curUser.GetUserName() + "\n");
+
+			// If else to make our menu dynamic
+			// If we are not an authenticated user, Display log on as 1)
+			if (!curUser.GetAuthStatus()) {
 				System.out.format("1) Log On\n");
-				break;
+				// Otherwise, if we are authenticated then we can connect to a depot instead.
+			} else if (curUser.GetAuthStatus()) {
+				System.out.format("1) Depot Menu\n");
 			}
+
 			System.out.format("2) List Depots\n");
+			// //Dynamic menu setting. Here we display log off to only users that are logged
+			// on.
 			while (curUser.GetAuthStatus()) {
 				System.out.format("L) Log Off\n");
 				break;
 			}
+
 			System.out.format("Q) Quit Application\n");
 			menuInput = S.next().toUpperCase();
 
+			// --------------Menu input Parameters here--------------
+
 			switch (menuInput) {
 			case "1":
-				System.out.format("You have selected Log On\n");
-				LogOn();
-				break;
+				if (!curUser.GetAuthStatus()) {
+					System.out.format("You have selected Log On\n");
+					LogOn();
+					
+					break;
+				} else if (curUser.GetAuthStatus()) {
+					System.out.format("You have selected Depot Menu\n");
+					curDepot.depotMenu(curUser);
+					break;
+				}
 			case "2":
 				System.out.format("You have selected list Depots\n");
 				ListDepots();
 				break;
 			case "L":
 				System.out.format("Logging out...\n");
-				curUser.authStatus = false;
+				LogOff();
 				break;
 			}
 
@@ -82,15 +108,20 @@ public class EDepot {
 		pwd = S.next();
 		System.out.format("Logging in...");
 
-		while(curUser.CheckCredentials(usrName, pwd)) {
-			System.out.format("Welcome, " + usrName + "\n\n");
-			MainMenu();
-		} 
+		while (curUser.CheckCredentials(usrName, pwd)) {
+			
+			
+			System.out.format("Welcome, " + usrName + "\n");
+			curDepot.setDepotName(curUser.getDepotLocation());
+			System.out.format("You are connected to : " + curDepot.GetDepotName() + "\n");
+			S.close();
+		}
 	}
 
 	public static void LogOff() {
+		curUser.setUserName("Guest");
+		curUser.setDepotLocation("");
 		curUser.SetAuthStatus(false);
-
 	}
 
 	public void SetupWorkSchedule() {

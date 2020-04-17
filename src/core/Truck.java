@@ -1,4 +1,4 @@
-package depots;
+package core;
 
 public class Truck extends Vehicle{
 	

@@ -1,4 +1,4 @@
-package depots;
+package core;
 public class Vehicle {
 
 	protected int type;
