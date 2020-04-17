@@ -8,6 +8,8 @@ public class EDepot {
 
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
 
+	static Driver curUser = new Driver("guest");
+
 	public static void main(String[] args) {
 
 		LoadDepotsFromFile();
@@ -19,13 +21,19 @@ public class EDepot {
 	public static void MainMenu() {
 
 		String menuInput = " "; // Initialising menu input to a blank space.
-				do {
+		do {
 			System.out.format("\tExcellence E-Depot Systems\n");
 			System.out.format("\t\tMain Menu:\t\t\n");
-			System.out.format("1) Log On\n");
+			while (!curUser.GetAuthStatus()) {
+				System.out.format("1) Log On\n");
+				break;
+			}
 			System.out.format("2) List Depots\n");
+			while (curUser.GetAuthStatus()) {
+				System.out.format("L) Log Off\n");
+				break;
+			}
 			System.out.format("Q) Quit Application\n");
-
 			menuInput = S.next().toUpperCase();
 
 			switch (menuInput) {
@@ -36,6 +44,10 @@ public class EDepot {
 			case "2":
 				System.out.format("You have selected list Depots\n");
 				ListDepots();
+				break;
+			case "L":
+				System.out.format("Logging out...\n");
+				curUser.authStatus = false;
 				break;
 			}
 
@@ -54,7 +66,7 @@ public class EDepot {
 			d.PrintDepotInfo();
 			d.listVehicles();
 		}
-		System.out.format("\n\n");
+		System.out.format("\n");
 
 	}
 
@@ -65,19 +77,19 @@ public class EDepot {
 
 		System.out.format("\nUsername: ");
 		usrName = S.next().toUpperCase();
-
 		System.out.format("\nYou are trying to log in as " + usrName);
-
-		Driver curUser = new Driver(usrName);
-
 		System.out.format("\nPassword: ");
 		pwd = S.next();
-
 		System.out.format("Logging in...");
 
-		if (curUser.CheckPassword(pwd)) {
+		while(curUser.CheckCredentials(usrName, pwd)) {
 			System.out.format("Welcome, " + usrName + "\n\n");
-		}
+			MainMenu();
+		} 
+	}
+
+	public static void LogOff() {
+		curUser.SetAuthStatus(false);
 
 	}
 
@@ -95,7 +107,7 @@ public class EDepot {
 
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
-				
+
 				DEPOTS.add(new Depot(String.valueOf(array[0]), String.valueOf(array[1])));
 			}
 

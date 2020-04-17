@@ -6,6 +6,7 @@ public class Driver {
 	
 	protected String userName;
 	protected String password;
+	protected boolean authStatus = false;
 	
 	public Driver(String userName) {
 		this.userName = userName;
@@ -17,7 +18,21 @@ public class Driver {
 		return userName;
 	}
 	
-	public boolean CheckPassword(String inputPassword) {
+	public void setUserName(String i){
+		this.userName = i;
+		
+	}
+	public boolean SetAuthStatus(boolean s) {
+		authStatus = s;
+		return s;
+		
+	}
+
+	public boolean GetAuthStatus() {
+		return authStatus;	
+	}
+
+	public boolean CheckCredentials(String inputUsername, String inputPassword) {
 		
 		Scanner CSVFile = null;
 
@@ -28,21 +43,23 @@ public class Driver {
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
 				
-				if (array[0].equals(userName)) {
+				if (array[0].equals(inputUsername)) {
 					
 					if(inputPassword.equals(array[1])) {
+						setUserName(inputUsername);
 						System.out.format("You Have sucessfully logged on " + userName + "\n\n");
+						
+						authStatus = true;
 						break;
 					}
 					else if(!CSVFile.hasNext()) {
 						System.out.format("This is not a recognised user...\n\n\n");
 					} 
 					else {
-						System.out.format("There was an error with your logon " + userName + "\n\n");
+						System.out.format("There was an error with your logon \n\n");
 			
 					}
 				} 
-				
 				
 					
 			}
