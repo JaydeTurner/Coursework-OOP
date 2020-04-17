@@ -1,19 +1,19 @@
+package platform;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import depots.Depot;
 
 public class EDepot {
 	private static final Scanner S = new Scanner(System.in);
 
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
 
-	static Driver curUser = new Driver("guest");
-
 	public static void main(String[] args) {
 
 		LoadDepotsFromFile();
-
 		MainMenu();
 
 	}

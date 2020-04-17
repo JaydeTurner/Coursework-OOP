@@ -1,3 +1,4 @@
+package depots;
 
 public class Truck extends Vehicle{
 	

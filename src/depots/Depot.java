@@ -1,3 +1,4 @@
+package depots;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -5,19 +6,19 @@ import java.util.Scanner;
 
 public class Depot {
 
-	
 	protected String depotName;
 	protected String postCode;
-	
+
 	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
+	private static final ArrayList<Driver> DRIVERS = new ArrayList<Driver>();
 	
+
 	public Depot(String depotName, String postCode) {
 		this.depotName = depotName;
 		this.postCode = postCode;
-		
+
 	}
 
-	
 	public String GetDepotName() {
 		return depotName;
 	}
@@ -25,42 +26,42 @@ public class Depot {
 	public String GetPostCode() {
 		return postCode;
 	}
-	
+
 	public void GetVehicle() {
-		
+
 	}
-	
+
 	public void Getdriver() {
-		
+
 	}
-	
+
 	public void WorkSchedule() {
-		
+
 	}
-	
+
 	public void CheckPassword() {
-		
+
 	}
-	
+
 	public void listVehicles() {
-		
+
 		for (Vehicle v : VEHICLES) {
-			if(v.GetLocation() == depotName) {
-			v.PrintVehicleInfo();
+			if (v.GetLocation() == depotName) {
+				v.PrintVehicleInfo();
 			}
 		}
 	}
-	
+
 	public void IsAvailable() {
-		
+
 	}
-	
+
 	public void PrintDepotInfo() {
 		String depotInfo = GetDepotName() + " " + GetPostCode();
-		
+
 		System.out.format(depotInfo + "\n");
-}
-	
+	}
+
 	public void LoadVehiclesFromFile() {
 
 		/*
@@ -79,19 +80,18 @@ public class Depot {
 				String[] array = CSVFile.nextLine().split(" ");
 				if (array[0].startsWith("0")) {
 
-					VEHICLES.add(new Truck(Integer.valueOf(array[0]), String.valueOf(array[1]),
+					DRIVERS.add(new Driver(Integer.valueOf(array[0]), String.valueOf(array[1]),
 							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[4]),
-							Integer.valueOf(array[6]), Integer.valueOf(array[7])) );
-
+							Integer.valueOf(array[6]), Integer.valueOf(array[7])));
 
 				} else if (array[0].startsWith("1") || array[0].startsWith("2")) {
-					
-					VEHICLES.add(new Tanker(Integer.valueOf(array[0]), String.valueOf(array[1]), String.valueOf(array[2]),
-							String.valueOf(array[3]), String.valueOf(array[5]), Integer.valueOf(array[4]),
-							Integer.valueOf(array[0]), String.valueOf(array[6])) );
+
+					DRIVERS.add(new Dmanager(Integer.valueOf(array[0]), String.valueOf(array[1]),
+							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[5]),
+							Integer.valueOf(array[4]), Integer.valueOf(array[0]), String.valueOf(array[6])));
 
 				}
-				
+
 			}
 
 		} catch (FileNotFoundException e) {
@@ -104,5 +104,39 @@ public class Depot {
 		}
 
 	}
+
+	public void loadPersonelFromFile() {
+		Scanner CSVFile = null;
+
+		try {
+
+			CSVFile = new Scanner(new FileReader("C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\personel.csv"));
+
+			while (CSVFile.hasNext()) {
+				String[] array = CSVFile.nextLine().split(" ");
+				if (array[0].startsWith("0")) {
+
+					VEHICLES.add(new Truck(Integer.valueOf(array[0]), String.valueOf(array[1]),
+							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[4]),
+							Integer.valueOf(array[6]), Integer.valueOf(array[7])));
+
+				} else if (array[0].startsWith("1") || array[0].startsWith("2")) {
+
+					VEHICLES.add(new Tanker(Integer.valueOf(array[0]), String.valueOf(array[1]),
+							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[5]),
+							Integer.valueOf(array[4]), Integer.valueOf(array[0]), String.valueOf(array[6])));
+
+				}
+
+			}
+
+		} catch (FileNotFoundException e) {
+			System.err.format(e.getMessage());
+			System.out.format("Please Contact the System Administrator. Error: personel file not found\n");
+		} finally {
+			if (CSVFile != null) {
+				CSVFile.close();
+			}
+		}
+	}
 }
-	
