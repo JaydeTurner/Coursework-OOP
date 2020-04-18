@@ -4,6 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
+
+//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
+// 		WITH APPROPRIATE NAMES
+
+
 public class Driver {
 
 	protected String userName;
@@ -76,12 +81,12 @@ public class Driver {
 					if (inputPassword.equals(array[1])) {
 						setUserName(inputUsername);
 						System.out.format("You Have sucessfully logged on " + userName + "\n\n");
-
+						setDepotLocation(array[2]);
 						setAuthStatus(true);
 						break;
 					}
 				} else if (!CSVFile.hasNext()) {
-					System.out.format("This is not a recognised user...\n\n\n");
+					System.out.format("No matching credentials...\n\n\n");
 
 				}
 
@@ -108,6 +113,14 @@ public class Driver {
 	public boolean IsAvailable() {
 
 		return false;
+
+	}
+
+	public void printDriverInfo() {
+
+		String driverInfo = getUserName() + " " + getDepotLocation() + " " + getPriviledge() + "\n";
+
+		System.out.format(driverInfo);
 
 	}
 

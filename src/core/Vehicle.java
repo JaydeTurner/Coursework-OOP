@@ -1,4 +1,10 @@
 package core;
+
+
+//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
+//	WITH APPROPRIATE NAMES
+
+
 public class Vehicle {
 
 	protected int type;
@@ -7,7 +13,7 @@ public class Vehicle {
 	protected String model;
 	protected String regNo;
 	protected int weight;
-	
+
 	public Vehicle(int type, String location, String make, String model, String regNo, int weight) {
 
 		this.type = type;
@@ -20,33 +26,33 @@ public class Vehicle {
 
 	public int GetType() {
 		return type;
-		
+
 	}
-	
+
 	public String GetLocation() {
 		return location;
-		
+
 	}
-	
+
 	public String GetMake() {
 		return make;
-		
+
 	}
-	
+
 	public String GetModel() {
 		return model;
-		
+
 	}
-	
+
 	public String GetRegNo() {
 		return regNo;
-		
+
 	}
-	
+
 	public int GetWeight() {
 		return weight;
 	}
-	
+
 	public boolean IsAvailable() {
 		boolean availability = false;
 		/*
@@ -59,18 +65,14 @@ public class Vehicle {
 	public void SetSchedule() {
 
 	}
-	
+
 	public void PrintVehicleInfo() {
-		
-		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " +
-		 GetRegNo() + " " + + GetWeight() + " "  + IsAvailable();
-		
+
+		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
+				+ " " + IsAvailable() + "\n";
+
 		System.out.format(vehicleInfo);
-		
-		
 
 	}
-
-	
 
 }

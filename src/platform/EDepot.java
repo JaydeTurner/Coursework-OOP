@@ -8,23 +8,29 @@ import java.util.Scanner;
 import core.Depot;
 import core.Driver;
 
+
+// Any instances of DEF as a string stand for default and should NOT appear at runtime.
+
+
+
+//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
+//	WITH APPROPRIATE NAMES
 public class EDepot {
 	private static final Scanner S = new Scanner(System.in);
 
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
-	
-	public static Driver curUser = new Driver("Guest", "", "", 0);
-	public static Depot curDepot = new Depot("", "");
+
+	public static Driver curUser = new Driver("Guest", "DEF", "DEF", 0);
+	public static Depot curDepot = new Depot("DEF", "DEF");
 
 	public static void main(String[] args) {
-		
+
 		LoadDepotsFromFile();
 		MainMenu();
 
 	}
 
 	public static void MainMenu() {
-
 
 		String menuInput = " "; // Initialising menu input to a blank space.
 		// ---------------Root Menu display
@@ -60,7 +66,7 @@ public class EDepot {
 				if (!curUser.GetAuthStatus()) {
 					System.out.format("You have selected Log On\n");
 					LogOn();
-					
+
 					break;
 				} else if (curUser.GetAuthStatus()) {
 					System.out.format("You have selected Depot Menu\n");
@@ -78,6 +84,9 @@ public class EDepot {
 			}
 
 		} while (!menuInput.equals("Q"));
+		
+		System.out.format("Closing Streams and shutting down...");
+		S.close();
 
 	}
 
@@ -90,7 +99,6 @@ public class EDepot {
 		System.out.format("List Of Depots:\n");
 		for (Depot d : DEPOTS) {
 			d.PrintDepotInfo();
-			d.listVehicles();
 		}
 		System.out.format("\n");
 
@@ -108,19 +116,18 @@ public class EDepot {
 		pwd = S.next();
 		System.out.format("Logging in...");
 
-		while (curUser.CheckCredentials(usrName, pwd)) {
+		curUser.CheckCredentials(usrName, pwd);
+		if (curUser.getAuthStatus()) {
 			
-			
-			System.out.format("Welcome, " + usrName + "\n");
 			curDepot.setDepotName(curUser.getDepotLocation());
-			System.out.format("You are connected to : " + curDepot.GetDepotName() + "\n");
-			S.close();
+			System.out.format("Welcome, " + usrName + "\n");
+			System.out.format("You are connected to : " + curDepot.getDepotName() + "\n");
 		}
 	}
 
 	public static void LogOff() {
 		curUser.setUserName("Guest");
-		curUser.setDepotLocation("");
+		curUser.setDepotLocation("DEF");
 		curUser.SetAuthStatus(false);
 	}
 

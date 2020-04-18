@@ -5,6 +5,10 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
+//	WITH APPROPRIATE NAMES
+
 public class Depot {
 
 	protected String depotName;
@@ -21,36 +25,41 @@ public class Depot {
 
 	}
 
-	public Driver depotMenu(Driver curUser) {
-		
+	public void depotMenu(Driver curUser) {
+		LoadVehiclesFromFile();
+		loadPersonelFromFile();
+
 		String menuInput = "";
+
 		do {
-			System.out.format( depotName + "\t\tDepot Menu:\t\t\n\n");
-			System.out.format("1) Placeholder first selection\n");
+			System.out.format("\n" + depotName + " Depot Menu:\t\t\n\n");
+			System.out.format("1) List Vehicles\n");
+			System.out.format("2) List Drivers\n");
 			System.out.format("Q) Main Menu\n");
-			menuInput  = S.next().toUpperCase();
+			menuInput = S.next().toUpperCase();
 
 			// --------------Menu input Parameters here--------------
 
 			switch (menuInput) {
 			case "1":
-				System.out.format("case 1\n");
+				System.out.format("Listing Vehicles...\n");
+				listVehicles();
 				break;
 			case "2":
-				System.out.format("Case 2\n");
+				System.out.format("Listing Drivers...\n");
+				listDrivers();
 				break;
 			case "Q":
 				System.out.format("Returning to Main Menu...\n");
-				
+
 				break;
 			}
 
 		} while (!menuInput.equals("Q"));
-	
-		return curUser;
+
 	}
 
-	public String GetDepotName() {
+	public String getDepotName() {
 		return depotName;
 	}
 
@@ -82,8 +91,17 @@ public class Depot {
 	public void listVehicles() {
 
 		for (Vehicle v : VEHICLES) {
-			if (v.GetLocation() == depotName) {
+			if (v.GetLocation().equals(getDepotName())) {
 				v.PrintVehicleInfo();
+			}
+		}
+	}
+
+	public void listDrivers() {
+
+		for (Driver d : DRIVERS) {
+			if (d.getDepotLocation().endsWith(getDepotName())) {
+				d.printDriverInfo();
 			}
 		}
 	}
@@ -93,7 +111,7 @@ public class Depot {
 	}
 
 	public void PrintDepotInfo() {
-		String depotInfo = GetDepotName() + " " + GetPostCode();
+		String depotInfo = getDepotName() + " " + GetPostCode();
 
 		System.out.format(depotInfo + "\n");
 	}
@@ -134,6 +152,7 @@ public class Depot {
 			System.err.format(e.getMessage());
 			System.out.format("Please Contact the System Administrator. Error: Vehicles file not found\n");
 		} finally {
+			System.out.format("\nVehicles loaded from file...\n");
 			if (CSVFile != null) {
 				CSVFile.close();
 			}
@@ -157,8 +176,8 @@ public class Depot {
 
 				} else if (array[3].startsWith("1")) {
 
-					DRIVERS.add(new Dmanager(String.valueOf(array[0]), String.valueOf(array[1]), String.valueOf(array[2]),
-							Integer.valueOf(array[3])));
+					DRIVERS.add(new Dmanager(String.valueOf(array[0]), String.valueOf(array[1]),
+							String.valueOf(array[2]), Integer.valueOf(array[3])));
 				}
 
 			}
@@ -167,6 +186,7 @@ public class Depot {
 			System.err.format(e.getMessage());
 			System.out.format("Please Contact the System Administrator. Error: personel file not found\n");
 		} finally {
+			System.out.format("\nPersonel loaded from file...\n");
 			if (CSVFile != null) {
 				CSVFile.close();
 			}
