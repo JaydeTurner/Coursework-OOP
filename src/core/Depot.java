@@ -1,10 +1,11 @@
 package core;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
+import scheduler.WorkSchedule;
 
 //TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
 //	WITH APPROPRIATE NAMES
@@ -19,6 +20,14 @@ public class Depot {
 	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
 	private static final ArrayList<Driver> DRIVERS = new ArrayList<Driver>();
 
+	public Date curDate = new Date();
+	public static Driver curUser = new Driver("Guest user", "DEF", "DEF", 0);
+	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEF", "DEF", " DEF", 0);
+
+	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1, curDate);
+	
+
+	
 	public Depot(String depotName, String postCode) {
 		this.depotName = depotName;
 		this.postCode = postCode;
@@ -28,7 +37,9 @@ public class Depot {
 	public void depotMenu(Driver curUser) {
 		LoadVehiclesFromFile();
 		loadPersonelFromFile();
-
+		
+		System.out.println(curSchedule.printSchedule());
+		
 		String menuInput = "";
 
 		do {
@@ -94,6 +105,7 @@ public class Depot {
 			if (v.GetLocation().equals(getDepotName())) {
 				v.PrintVehicleInfo();
 			}
+			
 		}
 	}
 
@@ -169,17 +181,19 @@ public class Depot {
 
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
-				if (array[3].startsWith("0")) {
+				if (getDepotName().equals(array[2])) {
+					if (array[3].equals("0")) {
 
-					DRIVERS.add(new Driver(String.valueOf(array[0]), String.valueOf(array[1]), String.valueOf(array[2]),
-							Integer.valueOf(array[3])));
+						DRIVERS.add(new Driver(String.valueOf(array[0]), String.valueOf(array[1]),
+								String.valueOf(array[2]), Integer.valueOf(array[3])));
 
-				} else if (array[3].startsWith("1")) {
+					} else if (array[3].equals("1")) {
 
-					DRIVERS.add(new Dmanager(String.valueOf(array[0]), String.valueOf(array[1]),
-							String.valueOf(array[2]), Integer.valueOf(array[3])));
-				}
+						DRIVERS.add(new Dmanager(String.valueOf(array[0]), String.valueOf(array[1]),
+								String.valueOf(array[2]), Integer.valueOf(array[3])));
 
+					}
+				} 
 			}
 
 		} catch (FileNotFoundException e) {

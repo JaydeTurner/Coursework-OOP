@@ -66,12 +66,12 @@ public class Vehicle {
 
 	}
 
-	public void PrintVehicleInfo() {
+	public String PrintVehicleInfo() {
 
 		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
 				+ " " + IsAvailable() + "\n";
 
-		System.out.format(vehicleInfo);
+		return vehicleInfo;
 
 	}
 

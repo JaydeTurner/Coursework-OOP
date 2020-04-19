@@ -116,11 +116,11 @@ public class Driver {
 
 	}
 
-	public void printDriverInfo() {
+	public String printDriverInfo() {
 
 		String driverInfo = getUserName() + " " + getDepotLocation() + " " + getPriviledge() + "\n";
 
-		System.out.format(driverInfo);
+		return driverInfo;
 
 	}
 
