@@ -88,8 +88,9 @@ public class EDepot {
 
 		} while (!menuInput.equals("Q"));
 		
-		System.out.format("Closing Streams and shutting down...");
+		System.out.format("Shutting down...");
 		S.close();
+		System.exit(0);
 
 	}
 

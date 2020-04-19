@@ -24,7 +24,7 @@ public class Depot {
 	public static Driver curUser = new Driver("Guest user", "DEF", "DEF", 0);
 	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEF", "DEF", " DEF", 0);
 
-	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1, curDate);
+	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1, curDate, JobState.PENDING);
 	
 
 	
@@ -38,7 +38,6 @@ public class Depot {
 		LoadVehiclesFromFile();
 		loadPersonelFromFile();
 		
-		System.out.println(curSchedule.printSchedule());
 		
 		String menuInput = "";
 

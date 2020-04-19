@@ -3,6 +3,7 @@ package scheduler;
 import java.util.Date;
 
 import core.Driver;
+import core.JobState;
 import core.Vehicle;
 
 public class WorkSchedule {
@@ -18,13 +19,15 @@ public class WorkSchedule {
 	private Date endDate;
 	private Driver assignedDriver;
 	private Vehicle assignedVehicle;
-
+	private JobState jobState; 
+	
+	
 	protected int cargoType;
 
 	public static Date curDate;
 
 	public WorkSchedule(String client, String deliveryAddress, Date startDate, Date endDate, Driver assignedDriver,
-			Vehicle assignedVehicle, int cargoType, Date curDate) {
+			Vehicle assignedVehicle, int cargoType, Date curDate, JobState jobState) {
 
 		this.client = client;
 		this.deliveryAddress = deliveryAddress;
@@ -32,6 +35,7 @@ public class WorkSchedule {
 		this.endDate = endDate;
 		this.assignedDriver = assignedDriver;
 		this.assignedVehicle = assignedVehicle;
+		this.jobState = jobState;
 	}
 	
 	public String printSchedule() {
@@ -40,6 +44,62 @@ public class WorkSchedule {
 		
 		
 		return s;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+
+	public String getDeliveryAddress() {
+		return deliveryAddress;
+	}
+
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Vehicle getAssignedVehicle() {
+		return assignedVehicle;
+	}
+
+	public void setAssignedVehicle(Vehicle assignedVehicle) {
+		this.assignedVehicle = assignedVehicle;
+	}
+
+	public JobState getJobState() {
+		return jobState;
+	}
+
+	public void setJobState(JobState jobState) {
+		this.jobState = jobState;
+	}
+
+	public int getCargoType() {
+		return cargoType;
+	}
+
+	public void setCargoType(int cargoType) {
+		this.cargoType = cargoType;
 	}
 
 
