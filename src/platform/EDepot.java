@@ -124,7 +124,6 @@ public class EDepot {
 		if (curUser.getAuthStatus()) {
 			
 			curDepot.setDepotName(curUser.getDepotLocation());
-			System.out.format("Welcome, " + usrName + "\n");
 			System.out.format("You are connected to : " + curDepot.getDepotName() + "\n");
 		}
 	}

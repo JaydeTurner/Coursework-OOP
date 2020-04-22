@@ -18,14 +18,13 @@ public class WorkSchedule {
 	private Date endDate;
 	private Driver assignedDriver;
 	private Vehicle assignedVehicle;
-	private JobState jobState;
+	private JobState jobState = JobState.PENDING;
 
 	protected int cargoType;
 
-	public static Date curDate;
 
 	public WorkSchedule(String client, String deliveryAddress, Date startDate, Date endDate, Driver assignedDriver,
-			Vehicle assignedVehicle, int cargoType, Date curDate, JobState jobState) {
+			Vehicle assignedVehicle) {
 
 		this.client = client;
 		this.deliveryAddress = deliveryAddress;
@@ -33,7 +32,6 @@ public class WorkSchedule {
 		this.endDate = endDate;
 		this.assignedDriver = assignedDriver;
 		this.assignedVehicle = assignedVehicle;
-		this.jobState = jobState;
 	}
 
 	public String printSchedule() {
@@ -100,6 +98,14 @@ public class WorkSchedule {
 		this.cargoType = cargoType;
 	}
 
-	
+	public Driver getAssignedDriver() {
+		return assignedDriver;
+	}
+
+	public void setAssignedDriver(Driver assignedDriver) {
+		this.assignedDriver = assignedDriver;
+	}
+
+
 	
 }

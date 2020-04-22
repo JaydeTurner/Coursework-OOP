@@ -81,12 +81,20 @@ public class Driver {
 						System.out.format("You Have sucessfully logged on " + userName + "\n\n");
 						setDepotLocation(array[2]);
 						setAuthStatus(true);
+						if (Integer.valueOf(array[3]) == 1) {
+							setPriviledge(1);
+							System.out.format("\nYou da boss, Boss...\n"); // This will only be seen when a manager logs on
+						}
 						break;
 					}
+					
+					
 				} else if (!CSVFile.hasNext()) {
 					System.out.format("No matching credentials...\n\n\n");
 
 				}
+				
+				
 
 			}
 
@@ -138,4 +146,9 @@ public class Driver {
 		this.authStatus = authStatus;
 	}
 
+	public int setPriviledge(int i) {
+		priviledge = i;
+		return priviledge;
+		
+	}
 }

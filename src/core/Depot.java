@@ -2,6 +2,9 @@ package core;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -22,12 +25,11 @@ public class Depot {
 	private static final ArrayList<Driver> DRIVERS = new ArrayList<Driver>();
 	private static final ArrayList<WorkSchedule> SCHEDULE = new ArrayList<WorkSchedule>();
 
-	public Date curDate = new Date();
+	public static Date curDate = new Date();
 	public static Driver curUser = new Driver("Guest user", "DEFPASS", "DELOCF", 0);
 	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEFMODEL", "DEFREG", " DEFLOC", 0);
 
-	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1,
-			curDate, JobState.PENDING);
+	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle);
 
 	public Depot(String depotName, String postCode) {
 		this.depotName = depotName;
@@ -35,9 +37,18 @@ public class Depot {
 
 	}
 
-	public void depotMenu(Driver curUser) {
+	public void depotMenu(Driver thisUser)
+
+	// ------thisUser = The user that is being passed in from the main menu
+	// ------curUser = The current user of the depot
+	{
+		curUser = thisUser;
+
 		LoadVehiclesFromFile();
 		loadPersonelFromFile();
+		loadScheduleFromFile(curUser);
+		
+		System.out.format(curUser.getDriverInfo() + " \n");
 
 		String menuInput = "";
 
@@ -45,6 +56,11 @@ public class Depot {
 			System.out.format("\n" + depotName + " Depot Menu:\t\t\n\n");
 			System.out.format("1) List Vehicles\n");
 			System.out.format("2) List Drivers\n");
+			System.out.format("3) List Schedule\n");
+			if (curUser.getPriviledge() == 1) {
+				System.out.format("4) New Vehicle\n");
+				System.out.format("5) New Driver\n");
+			}
 			System.out.format("Q) Main Menu\n");
 			menuInput = S.next().toUpperCase();
 
@@ -59,9 +75,22 @@ public class Depot {
 				System.out.format("Listing Drivers...\n");
 				listDrivers();
 				break;
+			case "3":
+				System.out.format("Listing Schedule...\n");
+				listSchedule();
+				break;
+			case "4":
+				if(curUser.getPriviledge() == 1) {
+				newDriver();
+				break;
+				}
+			case "5":
+				if(curUser.getPriviledge() == 1) {
+				newVehicle();
+				break;
+				}
 			case "Q":
 				System.out.format("Returning to Main Menu...\n");
-
 				break;
 			}
 
@@ -109,6 +138,16 @@ public class Depot {
 		}
 	}
 
+	public void listSchedule() {
+
+		for (WorkSchedule s : SCHEDULE) {
+			if (s.getAssignedDriver().GetUserName().equals(curUser.getUserName())) {
+				System.out.format(s.printSchedule() + "\n");
+			}
+		}
+
+	}
+
 	public void listDrivers() {
 
 		for (Driver d : DRIVERS) {
@@ -128,7 +167,6 @@ public class Depot {
 		System.out.format(depotInfo + "\n");
 	}
 
-	@SuppressWarnings("deprecation")
 	public void loadScheduleFromFile(Driver curUser) {
 		Scanner CSVFile = null;
 
@@ -139,37 +177,40 @@ public class Depot {
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
 
-				// TODO: Seperate parsing functionality to be its own class
+				// TODO: Separate parsing functionality to be its own class
+
+				// TODO: create a loop to track our index in the array for
+				// more readable and efficient
 
 				// --------Parsing our dates from schedule file into date objects-----------
-				String curStartDateStr = (array[2] + " " + array[3].toString() + " " + array[4].toString() + " "
-						+ array[5] + " " + array[6]);
-				String curEndDateStr = (array[7] + " " + array[8].toString() + " " + array[9].toString() + " "
-						+ array[10] + " " + array[11]);
-				Date curStartDate = new Date(curStartDateStr);
-				Date curEndDate = new Date(curEndDateStr);
+				SimpleDateFormat ft = new SimpleDateFormat("E, MMM dd HH:mm:ss Z yyyy");
 
+				String curStartDateStr = (array[2].toString() + " " + array[3].toString() + " " + array[4].toString()
+						+ " " + array[5].toString() + " " + array[6].toString() + " " + array[7].toString());
+				String curEndDateStr = (array[8].toString() + " " + array[9].toString() + " " + array[10].toString()
+						+ " " + array[11].toString() + " " + array[12].toString() + " " + array[13].toString());
+
+				Date curStartDate = ft.parse(curStartDateStr);
+				Date curEndDate = ft.parse(curEndDateStr);
 				// ---------Parsing Driver--------
 
-				Driver scheduledDriver = new Driver(String.valueOf(array[12]), " ", array[14], 0);
-
+				Driver scheduledDriver = new Driver(String.valueOf(array[14]), " ", array[15], 0);
 				// ---------Parsing Vehicle------
-
-				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[17]), String.valueOf(array[18]),
-						String.valueOf(array[19]), 0);
-
-				if (scheduledDriver.getUserName().equals(curUser.getUserName())) {
-
-					SCHEDULE.add(new WorkSchedule(array[0], array[1], curStartDate, curEndDate, scheduledDriver, scheduledVehicle, 0,
-							curDate, null));
-				}
+				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[16]), String.valueOf(array[17]),
+						String.valueOf(array[18]), 0);
+				// Adding to our schedule list
+				SCHEDULE.add(new WorkSchedule(array[0], array[1], curStartDate, curEndDate, scheduledDriver,
+						scheduledVehicle));
 
 			}
 		} catch (FileNotFoundException e) {
 			System.err.format(e.getMessage());
-			System.out.format("Please Contact the System Administrator. Error: personel file not found\n");
+			System.out.format("Please Contact the System Administrator. Error: schedule file not found\n");
+		} catch (ParseException e) {
+			System.out.format("Unparsable Date");
+			e.printStackTrace();
 		} finally {
-			System.out.format("\nPersonel loaded from file...\n");
+			System.out.format("\nSchedule loaded from file...\n");
 			if (CSVFile != null) {
 				CSVFile.close();
 			}
@@ -256,4 +297,79 @@ public class Depot {
 		}
 	}
 
+	public void newVehicle() {
+
+		System.out.format("\nWould you like to add a truck, or tanker?\n");
+		System.out.format("1) Truck\n");
+		System.out.format("2) Tanker\n");
+		String menuInput = S.next();
+
+		if (menuInput.toString() == "1") {
+			System.out.format("\nTruck make: ");
+			String newMake = S.next().toUpperCase();
+			System.out.format("\nTruck Model: ");
+			String newModel = S.next().toUpperCase();
+			System.out.format("\nTruck Registration Number : ");
+			String newRegNo = S.next().toUpperCase();
+			System.out.format("\nTruck Weight: ");
+			String newWeight = S.next().toUpperCase();
+			System.out.format("\nTruck Cargo Capacity: ");
+			String newCargoCap = S.next().toUpperCase();
+
+			VEHICLES.add(new Truck(0, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
+					Integer.valueOf(newCargoCap)));
+		}
+
+		else if (menuInput.toString() == "2") {
+			System.out.format("\nTanker make: ");
+			String newMake = S.next().toUpperCase();
+			System.out.format("\nTanker Model: ");
+			String newModel = S.next().toUpperCase();
+			System.out.format("\nTanker Registration Number : ");
+			String newRegNo = S.next().toUpperCase();
+			System.out.format("\nTanker Weight: ");
+			String newWeight = S.next().toUpperCase();
+			System.out.format("\nTanker Liquid Type: ");
+			String newLiqType = S.next().toUpperCase();
+			System.out.format("\nTanker Liquid Capacity: ");
+			String newLiqCap = S.next().toUpperCase();
+
+			VEHICLES.add(new Tanker(1, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
+					Integer.valueOf(newLiqCap), newLiqType));
+			System.out.format("Vehicle Added! ");
+		}
+	}
+
+	public void newDriver() {
+
+	}
+
+	public void newSchedule() {
+
+	}
+
+	public void saveSchedule() {
+
+	}
+
+	public void saveVehicles() {
+		try {
+			final PrintWriter WRITER = new PrintWriter(
+					"C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv");
+			for (Vehicle v : VEHICLES) { // for every element of arraylist vehicles, then write a line consisting of the
+				// data members pulled via getters
+				WRITER.println(v.GetType() + " " + v.GetLocation() + " " + v.GetMake() + " " + v.GetModel() + " "
+						+ v.GetRegNo() + " " + v.GetWeight());
+			}
+			WRITER.flush(); // This ensures we have no new line characters or anything stored in the buffer
+			WRITER.close();// that could cause runtime issues
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		}
+
+	}
+
+	public void saveDrivers() {
+
+	}
 }

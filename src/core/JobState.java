@@ -1,6 +1,8 @@
 package core;
 
 public enum JobState {
-	PENDING, ACTIVE, ARCHIVED
+	PENDING,
+	ACTIVE,
+	ARCHIVED;
 
 }

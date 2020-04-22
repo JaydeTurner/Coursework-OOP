@@ -2,8 +2,9 @@ package core;
 
 public class Tanker extends Vehicle {
 
-	private String liquidType;
 	private int liquidCapacity;
+	private String liquidType;
+
 
 	public Tanker(int type, String location, String make, String model, String regNo, int weight, int liquidCapacity,
 			String liquidType) {
