@@ -47,7 +47,7 @@ public class Depot {
 		LoadVehiclesFromFile();
 		loadPersonelFromFile();
 		loadScheduleFromFile(curUser);
-		
+
 		System.out.format(curUser.getDriverInfo() + " \n");
 
 		String menuInput = "";
@@ -80,14 +80,14 @@ public class Depot {
 				listSchedule();
 				break;
 			case "4":
-				if(curUser.getPriviledge() == 1) {
-				newDriver();
-				break;
+				if (curUser.getPriviledge() == 1) {
+					newVehicle();
+					break;
 				}
 			case "5":
-				if(curUser.getPriviledge() == 1) {
-				newVehicle();
-				break;
+				if (curUser.getPriviledge() == 1) {
+					newDriver();
+					break;
 				}
 			case "Q":
 				System.out.format("Returning to Main Menu...\n");
@@ -304,7 +304,9 @@ public class Depot {
 		System.out.format("2) Tanker\n");
 		String menuInput = S.next();
 
-		if (menuInput.toString() == "1") {
+		System.out.format(menuInput);
+
+		if (menuInput.equals("1")) {
 			System.out.format("\nTruck make: ");
 			String newMake = S.next().toUpperCase();
 			System.out.format("\nTruck Model: ");
@@ -318,9 +320,10 @@ public class Depot {
 
 			VEHICLES.add(new Truck(0, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
 					Integer.valueOf(newCargoCap)));
+			saveVehicles();
 		}
 
-		else if (menuInput.toString() == "2") {
+		else if (menuInput.equals("2")) {
 			System.out.format("\nTanker make: ");
 			String newMake = S.next().toUpperCase();
 			System.out.format("\nTanker Model: ");
@@ -336,15 +339,72 @@ public class Depot {
 
 			VEHICLES.add(new Tanker(1, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
 					Integer.valueOf(newLiqCap), newLiqType));
-			System.out.format("Vehicle Added! ");
+
+		} else {
+			System.out.format("Bad menu input...\n");
+			newVehicle();
+
 		}
+		System.out.format("\nVehicle Added!");
 	}
 
 	public void newDriver() {
+		System.out.format("\nWould you like to add a Driver, or a Manager?\n");
+		System.out.format("1) Driver\n");
+		System.out.format("2) Manager\n");
+		String menuInput = S.next();
 
+		System.out.format(menuInput);
+
+		if (menuInput.equals("1")) {
+			System.out.format("\nDrivers Name: ");
+			String newName = S.next().toUpperCase();
+			System.out.format("\nDrivers Password: ");
+			String newPass = S.next();
+
+			DRIVERS.add(new Driver(newName, newPass, depotName, 0));
+			saveDrivers();
+		}
+
+		else if (menuInput.equals("2")) {
+			System.out.format("\nManagers Name: ");
+			String newName = S.next().toUpperCase();
+			System.out.format("\nManagers Password: ");
+			String newPass = S.next();
+
+			DRIVERS.add(new Driver(newName, newPass, depotName, 01));
+			saveDrivers();
+		} else {
+			System.out.format("Bad menu input...\n");
+			newVehicle();
+
+		}
+		System.out.format("\nVehicle Added!");
+		{
+
+		}
 	}
 
 	public void newSchedule() {
+		/*
+		System.out.format("\nNew Schedule Menu:\n");
+		System.out.format("Please input the clients Name: ");
+		String newClientName = S.next();
+		System.out.format("Please input the clients Postcode: ");
+		String newClientAddress = S.next();
+		System.out.format("Please input the Driver Name, or just type a for auto assign ");
+		String newDriverName = S.next();
+		System.out.format("What Cargo is being transported? enter 0 for truck or 1 for tanker ");
+		String newCargoType = S.next();
+		
+		for (Vehicle v: VEHICLES) {
+			if (v.GetType()==Integer.valueOf(newCargoType)) {
+				
+				
+			}
+		}
+	
+		*/ //CURRENT WORK IN PROGRESS
 
 	}
 
@@ -367,9 +427,27 @@ public class Depot {
 			System.err.println(e.getMessage());
 		}
 
+		System.out.format("\nVehicles Saved...");
+
 	}
 
 	public void saveDrivers() {
+		try {
+			final PrintWriter WRITER = new PrintWriter(
+					"C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\Personel.csv");
+			for (Driver d : DRIVERS) { // for every element of arraylist vehicles, then write a line consisting of the
+				// data members pulled via getters
+				WRITER.println(
+						d.GetUserName() + " " + d.getPassword() + " " + d.getDepotLocation() + " " + d.getPriviledge());
+			}
+			WRITER.flush(); // This ensures we have no new line characters or anything stored in the buffer
+			WRITER.close();// that could cause runtime issues
+		} catch (FileNotFoundException e) {
+			System.err.println(e.getMessage());
+		}
+
+		System.out.format("\nPersonel Saved...");
 
 	}
+
 }
