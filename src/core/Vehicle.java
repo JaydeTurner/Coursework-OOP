@@ -66,10 +66,14 @@ public class Vehicle {
 
 	}
 
-	public String PrintVehicleInfo() {
+	public String getVehicleInfo() {
 
+		//A blank space is in place at the end of this string
+		//to ensure we cannot break any files
+		//due to a new line being added in an unexpected place.
+		
 		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
-				+ " " + IsAvailable() + "\n";
+				+ " " + IsAvailable() + " ";
 
 		return vehicleInfo;
 

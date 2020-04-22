@@ -1,7 +1,6 @@
 package scheduler;
 
 import java.util.Date;
-
 import core.Driver;
 import core.JobState;
 import core.Vehicle;
@@ -19,9 +18,8 @@ public class WorkSchedule {
 	private Date endDate;
 	private Driver assignedDriver;
 	private Vehicle assignedVehicle;
-	private JobState jobState; 
-	
-	
+	private JobState jobState;
+
 	protected int cargoType;
 
 	public static Date curDate;
@@ -37,12 +35,12 @@ public class WorkSchedule {
 		this.assignedVehicle = assignedVehicle;
 		this.jobState = jobState;
 	}
-	
+
 	public String printSchedule() {
-		
-		String s = client + " " + deliveryAddress + " " + startDate + " " + endDate + " " + assignedDriver.printDriverInfo() + " " + assignedVehicle.PrintVehicleInfo() ;
-		
-		
+
+		String s = client + " " + deliveryAddress + " " + startDate + " " + endDate + " "
+				+ assignedDriver.getDriverInfo() + " " + assignedVehicle.getVehicleInfo() + jobState.toString();
+
 		return s;
 	}
 
@@ -102,5 +100,6 @@ public class WorkSchedule {
 		this.cargoType = cargoType;
 	}
 
-
+	
+	
 }

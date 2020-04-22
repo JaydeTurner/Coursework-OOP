@@ -22,7 +22,7 @@ public class EDepot {
 	private static final Scanner S = new Scanner(System.in);
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
 
-	public static Driver curUser = new Driver("Guest user", "DEF", "DEF", 0);
+	public static Driver curUser = new Driver("Guest user", "DEFPASS", "DEFLOC", 0);
 	public static Depot curDepot = new Depot("DEFDEP", "DEFDEPCODE");
 	public static Date curDate = new Date();
 

@@ -1,4 +1,5 @@
 package core;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -19,15 +20,15 @@ public class Depot {
 
 	private static final ArrayList<Vehicle> VEHICLES = new ArrayList<Vehicle>();
 	private static final ArrayList<Driver> DRIVERS = new ArrayList<Driver>();
+	private static final ArrayList<WorkSchedule> SCHEDULE = new ArrayList<WorkSchedule>();
 
 	public Date curDate = new Date();
-	public static Driver curUser = new Driver("Guest user", "DEF", "DEF", 0);
-	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEF", "DEF", " DEF", 0);
+	public static Driver curUser = new Driver("Guest user", "DEFPASS", "DELOCF", 0);
+	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEFMODEL", "DEFREG", " DEFLOC", 0);
 
-	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1, curDate, JobState.PENDING);
-	
+	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle, 1,
+			curDate, JobState.PENDING);
 
-	
 	public Depot(String depotName, String postCode) {
 		this.depotName = depotName;
 		this.postCode = postCode;
@@ -37,8 +38,7 @@ public class Depot {
 	public void depotMenu(Driver curUser) {
 		LoadVehiclesFromFile();
 		loadPersonelFromFile();
-		
-		
+
 		String menuInput = "";
 
 		do {
@@ -101,10 +101,11 @@ public class Depot {
 	public void listVehicles() {
 
 		for (Vehicle v : VEHICLES) {
+
 			if (v.GetLocation().equals(getDepotName())) {
-				v.PrintVehicleInfo();
+				System.out.format(v.getVehicleInfo() + "\n");
 			}
-			
+
 		}
 	}
 
@@ -112,7 +113,7 @@ public class Depot {
 
 		for (Driver d : DRIVERS) {
 			if (d.getDepotLocation().endsWith(getDepotName())) {
-				d.printDriverInfo();
+				System.out.format(d.getDriverInfo() + "\n");
 			}
 		}
 	}
@@ -125,6 +126,55 @@ public class Depot {
 		String depotInfo = getDepotName() + " " + GetPostCode();
 
 		System.out.format(depotInfo + "\n");
+	}
+
+	@SuppressWarnings("deprecation")
+	public void loadScheduleFromFile(Driver curUser) {
+		Scanner CSVFile = null;
+
+		try {
+
+			CSVFile = new Scanner(new FileReader("C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\Schedule.csv"));
+
+			while (CSVFile.hasNext()) {
+				String[] array = CSVFile.nextLine().split(" ");
+
+				// TODO: Seperate parsing functionality to be its own class
+
+				// --------Parsing our dates from schedule file into date objects-----------
+				String curStartDateStr = (array[2] + " " + array[3].toString() + " " + array[4].toString() + " "
+						+ array[5] + " " + array[6]);
+				String curEndDateStr = (array[7] + " " + array[8].toString() + " " + array[9].toString() + " "
+						+ array[10] + " " + array[11]);
+				Date curStartDate = new Date(curStartDateStr);
+				Date curEndDate = new Date(curEndDateStr);
+
+				// ---------Parsing Driver--------
+
+				Driver scheduledDriver = new Driver(String.valueOf(array[12]), " ", array[14], 0);
+
+				// ---------Parsing Vehicle------
+
+				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[17]), String.valueOf(array[18]),
+						String.valueOf(array[19]), 0);
+
+				if (scheduledDriver.getUserName().equals(curUser.getUserName())) {
+
+					SCHEDULE.add(new WorkSchedule(array[0], array[1], curStartDate, curEndDate, scheduledDriver, scheduledVehicle, 0,
+							curDate, null));
+				}
+
+			}
+		} catch (FileNotFoundException e) {
+			System.err.format(e.getMessage());
+			System.out.format("Please Contact the System Administrator. Error: personel file not found\n");
+		} finally {
+			System.out.format("\nPersonel loaded from file...\n");
+			if (CSVFile != null) {
+				CSVFile.close();
+			}
+		}
+
 	}
 
 	public void LoadVehiclesFromFile() {
@@ -192,7 +242,7 @@ public class Depot {
 								String.valueOf(array[2]), Integer.valueOf(array[3])));
 
 					}
-				} 
+				}
 			}
 
 		} catch (FileNotFoundException e) {
@@ -205,4 +255,5 @@ public class Depot {
 			}
 		}
 	}
+
 }

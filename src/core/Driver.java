@@ -4,10 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-
 //TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
 // 		WITH APPROPRIATE NAMES
-
 
 public class Driver {
 
@@ -116,9 +114,13 @@ public class Driver {
 
 	}
 
-	public String printDriverInfo() {
+	public String getDriverInfo() {
+		
+		//A blank space is in place at the end of this string
+		//to ensure we cannot break any files
+		//due to a new line being added in an unexpected place.
 
-		String driverInfo = getUserName() + " " + getDepotLocation() + " " + getPriviledge() + "\n";
+		String driverInfo = getUserName() + " " + getDepotLocation() + " " + getPriviledge() + " ";
 
 		return driverInfo;
 
