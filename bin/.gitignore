@@ -1,14 +1,4 @@
-/System.class
-/Depot.class
-/Driver.class
-/Vehicle.class
-/WorkSchedule.class
-/Truck.class
-/Tanker.class
-/EDepot.class
+/core/
 /data/
-/Dmanager.class
 /platform/
 /scheduler/
-/depots/
-/core/
