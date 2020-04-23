@@ -72,8 +72,8 @@ public class Vehicle {
 		//to ensure we cannot break any files
 		//due to a new line being added in an unexpected place.
 		
-		String vehicleInfo = GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
-				+ " " + IsAvailable() + " ";
+		String vehicleInfo = GetType() + " " + GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
+			 + " ";
 
 		return vehicleInfo;
 

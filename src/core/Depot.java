@@ -14,6 +14,10 @@ import scheduler.WorkSchedule;
 //TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
 //	WITH APPROPRIATE NAMES
 
+//TODO: Runtime bug where logging out and logging back in causes the vehicles
+//list to be adding the entire last list too.
+
+
 public class Depot {
 
 	protected String depotName;
@@ -37,6 +41,7 @@ public class Depot {
 
 	}
 
+	
 	public void depotMenu(Driver thisUser)
 
 	// ------thisUser = The user that is being passed in from the main menu
@@ -235,6 +240,8 @@ public class Depot {
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
 				if (array[0].startsWith("0")) {
+					
+					System.out.format("adding truck");
 
 					VEHICLES.add(new Truck(Integer.valueOf(array[0]), String.valueOf(array[1]),
 							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[4]),
@@ -242,6 +249,8 @@ public class Depot {
 
 				} else if (array[0].startsWith("1") || array[0].startsWith("2")) {
 
+					System.out.format("adding tanker");
+					
 					VEHICLES.add(new Tanker(Integer.valueOf(array[0]), String.valueOf(array[1]),
 							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[5]),
 							Integer.valueOf(array[4]), Integer.valueOf(array[0]), String.valueOf(array[6])));
@@ -320,8 +329,8 @@ public class Depot {
 
 			VEHICLES.add(new Truck(0, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
 					Integer.valueOf(newCargoCap)));
-			saveVehicles();
-		}
+			//saveVehicles();
+		}	//COMMENTED OUT DUE TO BROKEN METHOD SEE TODO
 
 		else if (menuInput.equals("2")) {
 			System.out.format("\nTanker make: ");
@@ -372,14 +381,14 @@ public class Depot {
 			System.out.format("\nManagers Password: ");
 			String newPass = S.next();
 
-			DRIVERS.add(new Driver(newName, newPass, depotName, 01));
+			DRIVERS.add(new Driver(newName, newPass, depotName, 1));
 			saveDrivers();
 		} else {
 			System.out.format("Bad menu input...\n");
 			newVehicle();
 
 		}
-		System.out.format("\nVehicle Added!");
+		System.out.format("\nPersonel Added!");
 		{
 
 		}
@@ -411,15 +420,19 @@ public class Depot {
 	public void saveSchedule() {
 
 	}
-
+	/*
 	public void saveVehicles() {
+		
+		//TODO: FIX THIS
+		// CURRENTLY NOT ABLE TO OUTPUT SEPERATE TRUCK/TANKER SPECIFIC INFO
+		// ie, truck.getCargoCapacity() and tanker.getLiquidCap(); etc
 		try {
 			final PrintWriter WRITER = new PrintWriter(
 					"C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv");
 			for (Vehicle v : VEHICLES) { // for every element of arraylist vehicles, then write a line consisting of the
 				// data members pulled via getters
-				WRITER.println(v.GetType() + " " + v.GetLocation() + " " + v.GetMake() + " " + v.GetModel() + " "
-						+ v.GetRegNo() + " " + v.GetWeight());
+				if(v.GetType()==1)
+				WRITER.println(v.getVehicleInfo());
 			}
 			WRITER.flush(); // This ensures we have no new line characters or anything stored in the buffer
 			WRITER.close();// that could cause runtime issues
@@ -427,10 +440,10 @@ public class Depot {
 			System.err.println(e.getMessage());
 		}
 
-		System.out.format("\nVehicles Saved...");
+		System.out.format("\nVehicles Saving...");
 
 	}
-
+*/
 	public void saveDrivers() {
 		try {
 			final PrintWriter WRITER = new PrintWriter(
