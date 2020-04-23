@@ -111,6 +111,13 @@ public class Depot {
 			}
 
 		} while (!menuInput.equals("Q"));
+			
+			//These 3 lines ensure we start with an unpopulated arraylist
+			//this prevents data duplication and ever expanding array size
+			DRIVERS.clear();
+			VEHICLES.clear();
+			SCHEDULE.clear();
+		
 
 	}
 
