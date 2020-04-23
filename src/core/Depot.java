@@ -421,6 +421,9 @@ public class Depot {
 
 	public void newSchedule() {
 
+		//TODO: Impliment date correctly so the date input for a new job
+		//is not the current date, rather the estimated arrival date (+24hrs)
+		
 		Driver scheduleDriver = null;
 		Vehicle scheduleVehicle = null;
 
