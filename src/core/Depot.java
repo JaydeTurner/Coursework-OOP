@@ -51,8 +51,6 @@ public class Depot {
 		loadPersonelFromFile();
 		loadScheduleFromFile(curUser);
 
-		System.out.format(curUser.getDriverInfo() + " \n");
-
 		String menuInput = "";
 
 		do {
@@ -105,19 +103,28 @@ public class Depot {
 				if (curUser.getPriviledge() == 1) {
 					newSchedule();
 				}
+			case "8":
+				for (WorkSchedule s : SCHEDULE) {
+					String startLoc = s.getAssignedDriver().getDepotLocation();
+					System.out.format(startLoc);
+					if (curUser.getPriviledge() == 1 && (startLoc.equals(depotName))) {
+						System.out.format(s.printSchedule() + "\n");
+
+					}
+				}
+				break;
 			case "Q":
 				System.out.format("Returning to Main Menu...\n");
 				break;
 			}
 
 		} while (!menuInput.equals("Q"));
-			
-			//These 3 lines ensure we start with an unpopulated arraylist
-			//this prevents data duplication and ever expanding array size
-			DRIVERS.clear();
-			VEHICLES.clear();
-			SCHEDULE.clear();
-		
+
+		// These 3 lines ensure we start with an unpopulated arraylist
+		// this prevents data duplication and ever expanding array size
+		DRIVERS.clear();
+		VEHICLES.clear();
+		SCHEDULE.clear();
 
 	}
 
@@ -127,12 +134,12 @@ public class Depot {
 		String tRegNo = S.next();
 		System.out.format("\nWhere is this vehicle going :");
 		String tLoc = S.next();
-		
-		for (Vehicle v: VEHICLES) {
-			if(v.GetRegNo().equalsIgnoreCase(tRegNo)) {
+
+		for (Vehicle v : VEHICLES) {
+			if (v.GetRegNo().equalsIgnoreCase(tRegNo)) {
 				v.moveDepot(tLoc);
 			}
-				
+
 		}
 	}
 
@@ -234,8 +241,8 @@ public class Depot {
 
 				Driver scheduledDriver = new Driver(String.valueOf(array[14]), " ", array[15], 0);
 				// ---------Parsing Vehicle------
-				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[16]), String.valueOf(array[17]),
-						0, String.valueOf(array[18]));
+				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[16]), String.valueOf(array[17]), 0,
+						String.valueOf(array[18]));
 				// Adding to our schedule list
 				SCHEDULE.add(new WorkSchedule(array[0], array[1], curStartDate, curEndDate, scheduledDriver,
 						scheduledVehicle));
@@ -428,9 +435,9 @@ public class Depot {
 
 	public void newSchedule() {
 
-		//TODO: Impliment date correctly so the date input for a new job
-		//is not the current date, rather the estimated arrival date (+24hrs)
-		
+		// TODO: Impliment date correctly so the date input for a new job
+		// is not the current date, rather the estimated arrival date (+24hrs)
+
 		Driver scheduleDriver = null;
 		Vehicle scheduleVehicle = null;
 
@@ -439,7 +446,7 @@ public class Depot {
 		String newClientName = S.next();
 		System.out.format("\nPlease input the clients Postcode: ");
 		String newClientAddress = S.next();
-		
+
 		System.out.format("Select your driver:\n");
 		for (Driver d : DRIVERS) {
 			System.out.format(d.GetUserName() + "\n");

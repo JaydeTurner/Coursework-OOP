@@ -72,7 +72,7 @@ public class EDepot {
 
 					break;
 				} else if (curUser.GetAuthStatus()) {
-					System.out.format("You have selected Depot Menu\n");
+					System.out.format("\nYou have selected Depot Menu\n");
 					curDepot.depotMenu(curUser);
 					break;
 				}
@@ -90,7 +90,7 @@ public class EDepot {
 		
 		System.out.format("Shutting down...");
 		S.close();
-		System.exit(0);
+		System.exit(0);//ensures we close all threads
 
 	}
 
@@ -124,7 +124,7 @@ public class EDepot {
 		if (curUser.getAuthStatus()) {
 			
 			curDepot.setDepotName(curUser.getDepotLocation());
-			System.out.format("You are connected to : " + curDepot.getDepotName() + "\n");
+			System.out.format("You are connected to : " + curDepot.getDepotName() + "\n\n");
 		}
 	}
 

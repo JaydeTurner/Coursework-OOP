@@ -83,7 +83,7 @@ public class Driver {
 						setAuthStatus(true);
 						if (Integer.valueOf(array[3]) == 1) {
 							setPriviledge(1);
-							System.out.format("\nYou da boss, Boss...\n"); // This will only be seen when a manager logs on
+							System.out.format("\nYou da boss, Boss...\n\n"); // This will only be seen when a manager logs on
 						}
 						break;
 					}
