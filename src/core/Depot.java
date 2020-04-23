@@ -17,7 +17,6 @@ import scheduler.WorkSchedule;
 //TODO: Runtime bug where logging out and logging back in causes the vehicles
 //list to be adding the entire last list too.
 
-
 public class Depot {
 
 	protected String depotName;
@@ -31,7 +30,7 @@ public class Depot {
 
 	public static Date curDate = new Date();
 	public static Driver curUser = new Driver("Guest user", "DEFPASS", "DELOCF", 0);
-	public static Vehicle curVehicle = new Vehicle(0, "DEFVEHICLE", "DEFMODEL", "DEFREG", " DEFLOC", 0);
+	public static Vehicle curVehicle = new Vehicle(0, "DEFLOC", "DEFMAKE", "DEFMODEL", 0, "DEFREG");
 
 	public WorkSchedule curSchedule = new WorkSchedule("client ", "Address", curDate, curDate, curUser, curVehicle);
 
@@ -41,7 +40,6 @@ public class Depot {
 
 	}
 
-	
 	public void depotMenu(Driver thisUser)
 
 	// ------thisUser = The user that is being passed in from the main menu
@@ -61,10 +59,14 @@ public class Depot {
 			System.out.format("\n" + depotName + " Depot Menu:\t\t\n\n");
 			System.out.format("1) List Vehicles\n");
 			System.out.format("2) List Drivers\n");
-			System.out.format("3) List Schedule\n");
+			System.out.format("3) List Personal Schedule\n");
 			if (curUser.getPriviledge() == 1) {
 				System.out.format("4) New Vehicle\n");
-				System.out.format("5) New Driver\n");
+				System.out.format("5) Move Vehicle\n");
+				System.out.format("6) New Driver\n");
+				System.out.format("7) New Job\n");
+				System.out.format("8) List Complete Depot Schedule\n");
+
 			}
 			System.out.format("Q) Main Menu\n");
 			menuInput = S.next().toUpperCase();
@@ -91,8 +93,17 @@ public class Depot {
 				}
 			case "5":
 				if (curUser.getPriviledge() == 1) {
+					moveVehicle();
+					break;
+				}
+			case "6":
+				if (curUser.getPriviledge() == 1) {
 					newDriver();
 					break;
+				}
+			case "7":
+				if (curUser.getPriviledge() == 1) {
+					newSchedule();
 				}
 			case "Q":
 				System.out.format("Returning to Main Menu...\n");
@@ -101,6 +112,21 @@ public class Depot {
 
 		} while (!menuInput.equals("Q"));
 
+	}
+
+	private void moveVehicle() {
+
+		System.out.format("Input the vehicle reg number that you want to move :");
+		String tRegNo = S.next();
+		System.out.format("\nWhere is this vehicle going :");
+		String tLoc = S.next();
+		
+		for (Vehicle v: VEHICLES) {
+			if(v.GetRegNo().equalsIgnoreCase(tRegNo)) {
+				v.moveDepot(tLoc);
+			}
+				
+		}
 	}
 
 	public String getDepotName() {
@@ -202,7 +228,7 @@ public class Depot {
 				Driver scheduledDriver = new Driver(String.valueOf(array[14]), " ", array[15], 0);
 				// ---------Parsing Vehicle------
 				Vehicle scheduledVehicle = new Vehicle(0, null, String.valueOf(array[16]), String.valueOf(array[17]),
-						String.valueOf(array[18]), 0);
+						0, String.valueOf(array[18]));
 				// Adding to our schedule list
 				SCHEDULE.add(new WorkSchedule(array[0], array[1], curStartDate, curEndDate, scheduledDriver,
 						scheduledVehicle));
@@ -239,18 +265,19 @@ public class Depot {
 
 			while (CSVFile.hasNext()) {
 				String[] array = CSVFile.nextLine().split(" ");
-				if (array[0].startsWith("0")) {
-					
+				if (array[0].startsWith("0") && array[1].equalsIgnoreCase(depotName)) {
+
 					System.out.format("adding truck");
 
 					VEHICLES.add(new Truck(Integer.valueOf(array[0]), String.valueOf(array[1]),
-							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[4]),
-							Integer.valueOf(array[6]), Integer.valueOf(array[7])));
+							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[5]),
+							Integer.valueOf(array[4]), Integer.valueOf(array[6])));
 
-				} else if (array[0].startsWith("1") || array[0].startsWith("2")) {
+				} else if ((array[0].startsWith("1") || array[0].startsWith("2"))
+						&& array[1].equalsIgnoreCase(depotName)) {
 
 					System.out.format("adding tanker");
-					
+
 					VEHICLES.add(new Tanker(Integer.valueOf(array[0]), String.valueOf(array[1]),
 							String.valueOf(array[2]), String.valueOf(array[3]), String.valueOf(array[5]),
 							Integer.valueOf(array[4]), Integer.valueOf(array[0]), String.valueOf(array[6])));
@@ -329,8 +356,8 @@ public class Depot {
 
 			VEHICLES.add(new Truck(0, depotName, newMake, newModel, newRegNo, Integer.valueOf(newWeight),
 					Integer.valueOf(newCargoCap)));
-			//saveVehicles();
-		}	//COMMENTED OUT DUE TO BROKEN METHOD SEE TODO
+			// saveVehicles();
+		} // COMMENTED OUT DUE TO BROKEN METHOD SEE TODO
 
 		else if (menuInput.equals("2")) {
 			System.out.format("\nTanker make: ");
@@ -389,61 +416,78 @@ public class Depot {
 
 		}
 		System.out.format("\nPersonel Added!");
-		{
 
-		}
 	}
 
 	public void newSchedule() {
-		/*
+
+		Driver scheduleDriver = null;
+		Vehicle scheduleVehicle = null;
+
 		System.out.format("\nNew Schedule Menu:\n");
 		System.out.format("Please input the clients Name: ");
 		String newClientName = S.next();
-		System.out.format("Please input the clients Postcode: ");
+		System.out.format("\nPlease input the clients Postcode: ");
 		String newClientAddress = S.next();
-		System.out.format("Please input the Driver Name, or just type a for auto assign ");
-		String newDriverName = S.next();
-		System.out.format("What Cargo is being transported? enter 0 for truck or 1 for tanker ");
-		String newCargoType = S.next();
 		
-		for (Vehicle v: VEHICLES) {
-			if (v.GetType()==Integer.valueOf(newCargoType)) {
-				
-				
+		System.out.format("Select your driver:\n");
+		for (Driver d : DRIVERS) {
+			System.out.format(d.GetUserName() + "\n");
+		}
+		System.out.format("\nPlease input the Driver Name: ");
+		String newDriverName = S.next();
+
+		for (Driver d : DRIVERS) {
+			if (d.getUserName().equalsIgnoreCase(newDriverName)) {
+				scheduleDriver = d;
 			}
 		}
-	
-		*/ //CURRENT WORK IN PROGRESS
+		System.out.format("\nWhat Cargo is being transported?\n enter 0 for truck or 1 for tanker ");
+		String newCargoType = S.next();
+
+		for (Vehicle v : VEHICLES) {
+			if (v.GetType() == Integer.valueOf(newCargoType)) {
+				System.out.format(v.GetRegNo());
+			}
+
+		}
+
+		System.out.format("\nType the vehicle reg to assign: ");
+		String newReg = S.next().toUpperCase();
+
+		for (Vehicle v : VEHICLES) {
+			if (v.GetRegNo().equalsIgnoreCase(newReg)) {
+				scheduleVehicle = v;
+			}
+		}
+
+		SCHEDULE.add(
+				new WorkSchedule(newClientName, newClientAddress, curDate, curDate, scheduleDriver, scheduleVehicle));
 
 	}
 
 	public void saveSchedule() {
 
 	}
+
 	/*
-	public void saveVehicles() {
-		
-		//TODO: FIX THIS
-		// CURRENTLY NOT ABLE TO OUTPUT SEPERATE TRUCK/TANKER SPECIFIC INFO
-		// ie, truck.getCargoCapacity() and tanker.getLiquidCap(); etc
-		try {
-			final PrintWriter WRITER = new PrintWriter(
-					"C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv");
-			for (Vehicle v : VEHICLES) { // for every element of arraylist vehicles, then write a line consisting of the
-				// data members pulled via getters
-				if(v.GetType()==1)
-				WRITER.println(v.getVehicleInfo());
-			}
-			WRITER.flush(); // This ensures we have no new line characters or anything stored in the buffer
-			WRITER.close();// that could cause runtime issues
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
-		}
-
-		System.out.format("\nVehicles Saving...");
-
-	}
-*/
+	 * public void saveVehicles() {
+	 * 
+	 * //TODO: FIX THIS // CURRENTLY NOT ABLE TO OUTPUT SEPERATE TRUCK/TANKER
+	 * SPECIFIC INFO // ie, truck.getCargoCapacity() and tanker.getLiquidCap(); etc
+	 * try { final PrintWriter WRITER = new PrintWriter(
+	 * "C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv"); for
+	 * (Vehicle v : VEHICLES) { // for every element of arraylist vehicles, then
+	 * write a line consisting of the // data members pulled via getters
+	 * if(v.GetType()==1) WRITER.println(v.getVehicleInfo()); } WRITER.flush(); //
+	 * This ensures we have no new line characters or anything stored in the buffer
+	 * WRITER.close();// that could cause runtime issues } catch
+	 * (FileNotFoundException e) { System.err.println(e.getMessage()); }
+	 * 
+	 * System.out.format("\nVehicles Saving...");
+	 * 
+	 * }
+	 */
 	public void saveDrivers() {
 		try {
 			final PrintWriter WRITER = new PrintWriter(

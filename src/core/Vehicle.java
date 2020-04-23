@@ -14,7 +14,7 @@ public class Vehicle {
 	protected String regNo;
 	protected int weight;
 
-	public Vehicle(int type, String location, String make, String model, String regNo, int weight) {
+	public Vehicle(int type, String location, String make, String model,  int weight, String regNo) {
 
 		this.type = type;
 		this.location = location;
@@ -79,4 +79,8 @@ public class Vehicle {
 
 	}
 
+	public void moveDepot(String s) {
+		location = s.toUpperCase();
+		System.out.format("Vehicle sucessfully moved to " + location + "\n");
+	}
 }
