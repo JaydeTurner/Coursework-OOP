@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
-//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
-// 		WITH APPROPRIATE NAMES
 
 public class Driver {
 
@@ -43,11 +41,6 @@ public class Driver {
 		return depotLocation;
 	}
 
-	public String GetUserName() {
-
-		return userName;
-	}
-
 	public void setUserName(String i) {
 		this.userName = i;
 
@@ -59,11 +52,7 @@ public class Driver {
 
 	}
 
-	public boolean GetAuthStatus() {
-		return getAuthStatus();
-	}
-
-	public boolean CheckCredentials(String inputUsername, String inputPassword) {
+	public boolean checkCredentials(String inputUsername, String inputPassword) {
 
 		Scanner CSVFile = null;
 
@@ -83,18 +72,16 @@ public class Driver {
 						setAuthStatus(true);
 						if (Integer.valueOf(array[3]) == 1) {
 							setPriviledge(1);
-							System.out.format("\nYou da boss, Boss...\n\n"); // This will only be seen when a manager logs on
+							System.out.format("\nYou da boss, Boss...\n\n"); // This will only be seen when a manager
+																				// logs on
 						}
 						break;
 					}
-					
-					
+
 				} else if (!CSVFile.hasNext()) {
 					System.out.format("No matching credentials...\n\n\n");
 
 				}
-				
-				
 
 			}
 
@@ -123,10 +110,10 @@ public class Driver {
 	}
 
 	public String getDriverInfo() {
-		
-		//A blank space is in place at the end of this string
-		//to ensure we cannot break any files
-		//due to a new line being added in an unexpected place.
+
+		// A blank space is in place at the end of this string
+		// to ensure we cannot break any files
+		// due to a new line being added in an unexpected place.
 
 		String driverInfo = getUserName() + " " + getDepotLocation() + " " + getPriviledge() + " ";
 
@@ -134,7 +121,7 @@ public class Driver {
 
 	}
 
-	public void SetSchedule() {
+	public void setSchedule() {
 
 	}
 
@@ -149,6 +136,6 @@ public class Driver {
 	public int setPriviledge(int i) {
 		priviledge = i;
 		return priviledge;
-		
+
 	}
 }

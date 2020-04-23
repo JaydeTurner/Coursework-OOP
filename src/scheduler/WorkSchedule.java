@@ -22,7 +22,6 @@ public class WorkSchedule {
 
 	protected int cargoType;
 
-
 	public WorkSchedule(String client, String deliveryAddress, Date startDate, Date endDate, Driver assignedDriver,
 			Vehicle assignedVehicle) {
 
@@ -106,6 +105,4 @@ public class WorkSchedule {
 		this.assignedDriver = assignedDriver;
 	}
 
-
-	
 }

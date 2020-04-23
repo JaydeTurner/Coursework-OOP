@@ -1,9 +1,6 @@
 package core;
 
-public class Truck extends Vehicle{
-	
-	
-
+public class Truck extends Vehicle {
 
 	private int cargoCapacity;
 
@@ -12,7 +9,6 @@ public class Truck extends Vehicle{
 		this.cargoCapacity = cargoCapacity;
 	}
 
-	
 	public int getCargoCapacity() {
 		return cargoCapacity;
 	}
@@ -20,17 +16,14 @@ public class Truck extends Vehicle{
 	public void setCargoCapacity(int cargoCapacity) {
 		this.cargoCapacity = cargoCapacity;
 	}
-	
+
 	public String getTruckInfo() {
-	
-	String truckInfo = GetType() + " " + GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
-	 + " " + getCargoCapacity();
 
-	return truckInfo;
-	
-}
+		String truckInfo = getType() + " " + getLocation() + " " + getMake() + " " + getModel() + " " + getRegNo() + " "
+				+ +getWeight() + " " + getCargoCapacity();
 
+		return truckInfo;
 
-	
+	}
 
 }

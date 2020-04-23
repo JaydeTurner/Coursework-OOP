@@ -9,16 +9,10 @@ import java.util.Scanner;
 import core.Depot;
 import core.Driver;
 
-
-// Any instances of DEF as a string stand for default and should NOT appear at runtime.
-
-
-
-//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
-//	WITH APPROPRIATE NAMES
+// Any instances of DEF as a string stand for default and is to highlight runtime issues
 
 public class EDepot {
-	
+
 	private static final Scanner S = new Scanner(System.in);
 	private static final ArrayList<Depot> DEPOTS = new ArrayList<Depot>();
 
@@ -28,33 +22,33 @@ public class EDepot {
 
 	public static void main(String[] args) {
 
-		LoadDepotsFromFile();
-		MainMenu();
+		loadDepotsFromFile();
+		mainMenu();
 
 	}
 
-	public static void MainMenu() {
+	public static void mainMenu() {
 
 		String menuInput = " "; // Initialising menu input to a blank space.
 		// ---------------Root Menu display
 		do {
 			System.out.format("\tExcellence E-Depot Systems\n");
 			System.out.format("\t\tMain Menu:\t\t\n");
-			System.out.format("\n\nWelcome, " + curUser.GetUserName() + "\n");
+			System.out.format("\n\nWelcome, " + curUser.getUserName() + "\n");
 
 			// If else to make our menu dynamic
 			// If we are not an authenticated user, Display log on as 1)
-			if (!curUser.GetAuthStatus()) {
+			if (!curUser.getAuthStatus()) {
 				System.out.format("1) Log On\n");
 				// Otherwise, if we are authenticated then we can connect to a depot instead.
-			} else if (curUser.GetAuthStatus()) {
+			} else if (curUser.getAuthStatus()) {
 				System.out.format("1) Depot Menu\n");
 			}
 
 			System.out.format("2) List Depots\n");
 			// //Dynamic menu setting. Here we display log off to only users that are logged
 			// on.
-			while (curUser.GetAuthStatus()) {
+			while (curUser.getAuthStatus()) {
 				System.out.format("L) Log Off\n");
 				break;
 			}
@@ -66,40 +60,40 @@ public class EDepot {
 
 			switch (menuInput) {
 			case "1":
-				if (!curUser.GetAuthStatus()) {
+				if (!curUser.getAuthStatus()) {
 					System.out.format("You have selected Log On\n");
-					LogOn();
+					logOn();
 
 					break;
-				} else if (curUser.GetAuthStatus()) {
+				} else if (curUser.getAuthStatus()) {
 					System.out.format("\nYou have selected Depot Menu\n");
 					curDepot.depotMenu(curUser);
 					break;
 				}
 			case "2":
 				System.out.format("You have selected list Depots\n");
-				ListDepots();
+				listDepots();
 				break;
 			case "L":
 				System.out.format("Logging out...\n");
-				LogOff();
+				logOff();
 				break;
 			}
 
 		} while (!menuInput.equals("Q"));
-		
+
 		System.out.format("Shutting down...");
 		S.close();
-		System.exit(0);//ensures we close all threads
+		System.exit(0);// ensures we close all threads
 
 	}
 
-	public Depot GetDepot() {
+	public Depot getDepot() {
 
 		return null;
 	}
 
-	public static void ListDepots() {
+	public static void listDepots() {
 		System.out.format("List Of Depots:\n");
 		for (Depot d : DEPOTS) {
 			d.PrintDepotInfo();
@@ -108,7 +102,7 @@ public class EDepot {
 
 	}
 
-	public static void LogOn() {
+	public static void logOn() {
 
 		String usrName = " ";
 		String pwd = " ";
@@ -120,25 +114,25 @@ public class EDepot {
 		pwd = S.next();
 		System.out.format("Logging in...");
 
-		curUser.CheckCredentials(usrName, pwd);
+		curUser.checkCredentials(usrName, pwd);
 		if (curUser.getAuthStatus()) {
-			
+
 			curDepot.setDepotName(curUser.getDepotLocation());
 			System.out.format("You are connected to : " + curDepot.getDepotName() + "\n\n");
 		}
 	}
 
-	public static void LogOff() {
+	public static void logOff() {
 		curUser.setUserName("Guest");
 		curUser.setDepotLocation("DEF");
 		curUser.SetAuthStatus(false);
 	}
 
-	public void SetupWorkSchedule() {
+	public void setupWorkSchedule() {
 
 	}
 
-	public static void LoadDepotsFromFile() {
+	public static void loadDepotsFromFile() {
 
 		Scanner CSVFile = null;
 

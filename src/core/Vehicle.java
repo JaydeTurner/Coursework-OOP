@@ -1,10 +1,5 @@
 package core;
 
-
-//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
-//	WITH APPROPRIATE NAMES
-
-
 public class Vehicle {
 
 	protected int type;
@@ -14,7 +9,7 @@ public class Vehicle {
 	protected String regNo;
 	protected int weight;
 
-	public Vehicle(int type, String location, String make, String model,  int weight, String regNo) {
+	public Vehicle(int type, String location, String make, String model, int weight, String regNo) {
 
 		this.type = type;
 		this.location = location;
@@ -24,36 +19,36 @@ public class Vehicle {
 		this.weight = weight;
 	}
 
-	public int GetType() {
+	public int getType() {
 		return type;
 
 	}
 
-	public String GetLocation() {
+	public String getLocation() {
 		return location;
 
 	}
 
-	public String GetMake() {
+	public String getMake() {
 		return make;
 
 	}
 
-	public String GetModel() {
+	public String getModel() {
 		return model;
 
 	}
 
-	public String GetRegNo() {
+	public String getRegNo() {
 		return regNo;
 
 	}
 
-	public int GetWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public boolean IsAvailable() {
+	public boolean isAvailable() {
 		boolean availability = false;
 		/*
 		 * Keeping the default state of availability to false So should something go
@@ -62,18 +57,18 @@ public class Vehicle {
 		return availability;
 	}
 
-	public void SetSchedule() {
+	public void setSchedule() {
 
 	}
 
 	public String getVehicleInfo() {
 
-		//A blank space is in place at the end of this string
-		//to ensure we cannot break any files
-		//due to a new line being added in an unexpected place.
-		
-		String vehicleInfo = GetType() + " " + GetLocation() + " " + GetMake() + " " + GetModel() + " " + GetRegNo() + " " + +GetWeight()
-			 + " ";
+		// A blank space is in place at the end of this string
+		// to ensure we cannot break any files
+		// due to a new line being added in an unexpected place.
+
+		String vehicleInfo = getType() + " " + getLocation() + " " + getMake() + " " + getModel() + " " + getRegNo()
+				+ " " + +getWeight() + " ";
 
 		return vehicleInfo;
 

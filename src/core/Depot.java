@@ -11,11 +11,6 @@ import java.util.Scanner;
 
 import scheduler.WorkSchedule;
 
-//TODO: REFACTOR ALL FUNCTIONS AND VARIABLES TO BE CORRECT CASE 
-//	WITH APPROPRIATE NAMES
-
-//TODO: Runtime bug where logging out and logging back in causes the vehicles
-//list to be adding the entire last list too.
 
 public class Depot {
 
@@ -47,7 +42,7 @@ public class Depot {
 	{
 		curUser = thisUser;
 
-		LoadVehiclesFromFile();
+		loadVehiclesFromFile();
 		loadPersonelFromFile();
 		loadScheduleFromFile(curUser);
 
@@ -136,7 +131,7 @@ public class Depot {
 		String tLoc = S.next();
 
 		for (Vehicle v : VEHICLES) {
-			if (v.GetRegNo().equalsIgnoreCase(tRegNo)) {
+			if (v.getRegNo().equalsIgnoreCase(tRegNo)) {
 				v.moveDepot(tLoc);
 			}
 
@@ -147,7 +142,7 @@ public class Depot {
 		return depotName;
 	}
 
-	public String GetPostCode() {
+	public String getPostCode() {
 		return postCode;
 	}
 
@@ -156,7 +151,7 @@ public class Depot {
 
 	}
 
-	public void GetVehicle() {
+	public void getVehicle() {
 
 	}
 
@@ -176,7 +171,7 @@ public class Depot {
 
 		for (Vehicle v : VEHICLES) {
 
-			if (v.GetLocation().equals(getDepotName())) {
+			if (v.getLocation().equals(getDepotName())) {
 				System.out.format(v.getVehicleInfo() + "\n");
 			}
 
@@ -186,7 +181,7 @@ public class Depot {
 	public void listSchedule() {
 
 		for (WorkSchedule s : SCHEDULE) {
-			if (s.getAssignedDriver().GetUserName().equals(curUser.getUserName())) {
+			if (s.getAssignedDriver().getUserName().equals(curUser.getUserName())) {
 				System.out.format(s.printSchedule() + "\n");
 			}
 		}
@@ -207,7 +202,7 @@ public class Depot {
 	}
 
 	public void PrintDepotInfo() {
-		String depotInfo = getDepotName() + " " + GetPostCode();
+		String depotInfo = getDepotName() + " " + getPostCode();
 
 		System.out.format(depotInfo + "\n");
 	}
@@ -263,7 +258,7 @@ public class Depot {
 
 	}
 
-	public void LoadVehiclesFromFile() {
+	public void loadVehiclesFromFile() {
 
 		/*
 		 * Here my intention is to load in our vehicles CSV Then I was to get the first
@@ -449,7 +444,7 @@ public class Depot {
 
 		System.out.format("Select your driver:\n");
 		for (Driver d : DRIVERS) {
-			System.out.format(d.GetUserName() + "\n");
+			System.out.format(d.getUserName() + "\n");
 		}
 		System.out.format("\nPlease input the Driver Name: ");
 		String newDriverName = S.next();
@@ -463,8 +458,8 @@ public class Depot {
 		String newCargoType = S.next();
 
 		for (Vehicle v : VEHICLES) {
-			if (v.GetType() == Integer.valueOf(newCargoType)) {
-				System.out.format(v.GetRegNo());
+			if (v.getType() == Integer.valueOf(newCargoType)) {
+				System.out.format(v.getRegNo());
 			}
 
 		}
@@ -473,7 +468,7 @@ public class Depot {
 		String newReg = S.next().toUpperCase();
 
 		for (Vehicle v : VEHICLES) {
-			if (v.GetRegNo().equalsIgnoreCase(newReg)) {
+			if (v.getRegNo().equalsIgnoreCase(newReg)) {
 				scheduleVehicle = v;
 			}
 		}
@@ -490,13 +485,16 @@ public class Depot {
 	/*
 	 * public void saveVehicles() {
 	 * 
-	 * //TODO: FIX THIS // CURRENTLY NOT ABLE TO OUTPUT SEPERATE TRUCK/TANKER
-	 * SPECIFIC INFO // ie, truck.getCargoCapacity() and tanker.getLiquidCap(); etc
-	 * try { final PrintWriter WRITER = new PrintWriter(
-	 * "C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv"); for
-	 * (Vehicle v : VEHICLES) { // for every element of arraylist vehicles, then
-	 * write a line consisting of the // data members pulled via getters
-	 * if(v.GetType()==1) WRITER.println(v.getVehicleInfo()); } WRITER.flush(); //
+	 * //TODO: FIX THIS 
+	 * // CURRENTLY NOT ABLE TO OUTPUT SEPERATE TRUCK/TANKER SPECIFIC INFO 
+	 * ie, truck.getCargoCapacity() and tanker.getLiquidCap(); etc
+	 * try 
+	 * 	{ 
+	 * final PrintWriter WRITER = new PrintWriter("C:\\Users\\jayde\\git\\Coursework-OOP\\src\\data\\vehicles.csv");
+	 *  for(Vehicle v : VEHICLES) { 
+	 * if(v.GetType()==1) 
+	 * WRITER.println(v.getVehicleInfo());
+	 * } WRITER.flush(); //
 	 * This ensures we have no new line characters or anything stored in the buffer
 	 * WRITER.close();// that could cause runtime issues } catch
 	 * (FileNotFoundException e) { System.err.println(e.getMessage()); }
@@ -512,7 +510,7 @@ public class Depot {
 			for (Driver d : DRIVERS) { // for every element of arraylist vehicles, then write a line consisting of the
 				// data members pulled via getters
 				WRITER.println(
-						d.GetUserName() + " " + d.getPassword() + " " + d.getDepotLocation() + " " + d.getPriviledge());
+						d.getUserName() + " " + d.getPassword() + " " + d.getDepotLocation() + " " + d.getPriviledge());
 			}
 			WRITER.flush(); // This ensures we have no new line characters or anything stored in the buffer
 			WRITER.close();// that could cause runtime issues
